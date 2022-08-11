@@ -1,35 +1,73 @@
 const express = require('express');
-const _ = require('underscore')
-
-const abc = require('../introduction/intro')
-const loggerModule = require('../logger/logger.js')
-const formatterModule = require('../validator/formatter') 
-const helperModule = require('../util/helper')
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    console.log('My batch is', abc.name)
-    abc.printName()
-    loggerModule.printInfo()
-    formatterModule.trimMyString()
-    formatterModule.getUpperCaseString()
-    formatterModule.changetoLowerCase()
-    helperModule.getTodaysDate()
-    helperModule.getCurrentMonth()
-    helperModule.printBatchDetails()
-    let weekdend = ['Saturday','Sunday','Monday']
-    let result = _.first(weekdend, 2)
-    console.log('Unserscore example resultr is ',result)
-    res.send('My second ever api!')
-});
-
-
-router.get('/test-you', function(req, res){
-    res.send('This is the second routes implementation')
+router.get('/students/:name', function(req, res) {
+    let studentName = req.params.name
+    console.log(studentName)
+    res.send(studentName)
 })
 
-router.get('/give-me-students-data',function(req, res){
-
+router.get("/random" , function(req, res) {
+    res.send("hi there")
 })
+
+
+router.get("/test-api" , function(req, res) {
+    res.send("hi FunctionUp")
+})
+
+
+router.get("/test-api-2" , function(req, res) {
+    res.send("hi FunctionUp. This is another cool API")
+})
+
+
+router.get("/test-api-3" , function(req, res) {
+    res.send("hi FunctionUp. This is another cool API. And NOw i am bored of creating API's ")
+})
+
+
+router.get("/test-api-4" , function(req, res) {
+    res.send("hi FunctionUp. This is another cool API. And NOw i am bored of creating API's. PLZ STOP CREATING MORE API;s ")
+})
+
+
+
+router.get("/test-api-5" , function(req, res) {
+    res.send("hi FunctionUp5. This is another cool API. And NOw i am bored of creating API's. PLZ STOP CREATING MORE API;s ")
+})
+
+router.get("/test-api-6" , function(req, res) {
+    res.send({a:56, b: 45})
+})
+
+router.post("/test-post", function(req, res) {
+    res.send([ 23, 45 , 6])
+})
+
+
+router.post("/test-post-2", function(req, res) {
+    res.send(  { msg: "hi" , status: true }  )
+})
+
+router.post("/test-post-3", function(req, res) {
+    // let id = req.body.user
+    // let pwd= req.body.password
+
+    // console.log( id , pwd)
+
+    console.log( req.body )
+
+    res.send(  { msg: "hi" , status: true }  )
+})
+
+
+
+router.post("/test-post-4", function(req, res) {
+    let arr= [ 12, "functionup"]
+    let ele= req.body.element
+    arr.push(ele)
+    res.send(  { msg: arr , status: true }  )
+})
+
 module.exports = router;
-// adding this comment for no reason
