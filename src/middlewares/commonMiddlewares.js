@@ -1,26 +1,26 @@
+//const createUser = require("../controllers/usersController");
+//const orderModel = require("../models/orderModel");
 
-const mid1= function ( req, res, next) {
-    req.falana= "hi there. i am adding something new to the req object"
-    console.log("Hi I am a middleware named Mid1")
-    next()
-}
+const headerMiddleware = function (req, res, next) {
+  const isFreeAppUser = req.headers.isfreeappuser;
+  if (isFreeAppUser === undefined) {
+    res.send("Header freeAppUser is mandatory");
+  } else {
+    req.isFreeAppUser = isFreeAppUser;
+    next();
+  }
+};
 
-const mid2= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid2")
-    next()
-}
+const bodyMiddleware = function (req, res, next) {
+  const data = req.body;
+  if (!data.userId) {
+    res.send("User Id is mandatory");
+  } else if (!data.productId) {
+    res.send("Product Id is mandatory");
+  } else {
+    next();
+  }
+};
 
-const mid3= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid3")
-    next()
-}
-
-const mid4= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid4")
-    next()
-}
-
-module.exports.mid1= mid1
-module.exports.mid2= mid2
-module.exports.mid3= mid3
-module.exports.mid4= mid4
+module.exports.headerMiddleware = headerMiddleware;
+module.exports.bodyMiddleware = bodyMiddleware;

@@ -1,79 +1,44 @@
-const { count } = require("console")
-const BookModel = require("../models/orderModel")
+const orderModel = require("../models/orderModel");
+const userModel = require("../models/userModel");
+const productModel = require("../models/productModel");
 
-const createBook= async function (req, res) {
-    let data= req.body
+const createOrder = async function (req, res) {
+  let data = req.body;
+  const isFreeAppUser = req.isFreeAppUser;
 
-    let savedData= await BookModel.create(data)
-    res.send({msg: savedData})
-}
+  let user = await userModel.findById(data.userId);
+  if (!user) return res.send("Entered User Id is not valid");
+  let product = await productModel.findById(data.productId);
+  if (!product) return res.send("Entered Product Id is not valid");
 
+  if (isFreeAppUser === "true") {
+    await orderModel
+      .findOne({ userId: data.userId, productId: data.productId })
+      .updateOne({ $set: { amount: 0 } });
+    await userModel
+      .findById(data.userId)
+      .updateOne({ $set: { isFreeAppUser: true } });
+    data.amount = 0;
+  } else {
+    const user = await userModel.findById(data.userId);
+    const product = await productModel.findOne({ _id: data.productId });
+    const balance = user.balance - product.price;
+    await userModel.updateOne(
+      { _id: data.userId },
+      { $set: { balance: balance, isFreeAppUser: false } }
+    );
+    data.amount = product.price;
+  }
+  data.isFreeAppUser = isFreeAppUser;
+  await orderModel.create(data);
+  res.send({ msg: "Order saved successfully" });
+};
 
+const getOrderDetails = async function (req, res) {
+  let specificOrder = await orderModel.find().populate(["userId", "productId"]);
+  console.log(specificOrder);
+  res.send({ data: specificOrder });
+};
 
-
-
-
-const getBooksData = async function (req, res) {
-    let allBooks = await BookModel.find({ authorName: "HO" })
-    console.log(allBooks)
-    if (allBooks.length > 0) res.send({ msg: allBooks, condition: true })
-    else res.send({ msg: "No books found", condition: false })
-}
-
-
-const updateBooks = async function (req, res) {
-    let data = req.body // {sales: "1200"}
-    // let allBooks= await BookModel.updateMany( 
-    //     { author: "SK"} , //condition
-    //     { $set: data } //update in data
-    //  )
-    let allBooks = await BookModel.findOneAndUpdate(
-        { authorName: "ABC" }, //condition
-        { $set: data }, //update in data
-        { new: true, upsert: true } ,// new: true - will give you back the updated document // Upsert: it finds and updates the document but if the doc is not found(i.e it does not exist) then it creates a new document i.e UPdate Or inSERT
-    )
-
-    res.send({ msg: allBooks })
-}
-
-const deleteBooks = async function (req, res) {
-    // let data = req.body 
-    let allBooks = await BookModel.updateMany(
-        { authorName: "FI" }, //condition
-        { $set: { isDeleted: true } }, //update in data
-        { new: true } ,
-    )
-
-    res.send({ msg: allBooks })
-}
-
-
-
-const totalSalesPerAuthor = async function (req, res) {
-    // let data = req.body 
-    let allAuthorSales = await BookModel.aggregate(
-        [
-            { $group: { _id: "$authorName", totalNumberOfSales: { $sum: "$sales" } } },
-            { $sort: { totalNumberOfSales: -1 } }
-        ]
-    )
-
-    res.send({ msg: allAuthorSales })
-}
-
-
-
-
-// CRUD OPERATIONS:
-// CREATE
-// READ
-// UPDATE
-// DELETE
-
-
-
-module.exports.createBook = createBook
-module.exports.getBooksData = getBooksData
-module.exports.updateBooks = updateBooks
-module.exports.deleteBooks = deleteBooks
-module.exports.totalSalesPerAuthor = totalSalesPerAuthor
+module.exports.createOrder = createOrder;
+module.exports.getOrderDetails = getOrderDetails;
