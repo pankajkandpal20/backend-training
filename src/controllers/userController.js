@@ -39,14 +39,7 @@ const loginUser = async function (req, res) {
     },
     "functionup-plutonium-very-very-secret-key"
   );
-  res.setHeade
-  
-  
-  
-  
-  
-  
-  r("x-auth-token", token);
+  res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
 };
 
