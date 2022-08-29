@@ -6,11 +6,10 @@ const headerMiddle = async function (req, res, next) {
 
   if (!token) res.send({ status: false, msg: "Token must be present" });
 
-  try {
-    let decodedtoken = jwt.verify(token, "functionup-plutonium");
-  } catch (error) {
-    return res.send("The token is Invalid");
-  }
+  let decodedToken = jwt.verify(token, "functionUp-plutonium");
+  if (!decodedToken)
+    return res.send({ status: false, msg: "token is invalid" });
+
 
   let userId = req.params.userId;
   let user = await userModel.findById(userId);

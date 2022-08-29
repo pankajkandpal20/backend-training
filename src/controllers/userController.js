@@ -25,7 +25,7 @@ const loginUser = async function (req, res) {
       batch: "functionUp",
       organisation: "FunctionUp",
     },
-    "functionup-plutonium"
+    "functionUp-plutonium"
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
