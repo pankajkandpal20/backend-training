@@ -34,10 +34,10 @@ const loginUser = async function (req, res) {
       batch: "plutonium",
       organisation: "FUnctionUp",
     },
-    "functionup-plutonium-very-very-secret-key"
+    "functionUp-plutonium-very-very-secret-key"
   );
   //res.setHeader("x-auth-token", token);
-  res.send({ status: true, data: token });
+  res.send({ status: true, token : token });
 };
 
 const getUserData = async function (req, res) {

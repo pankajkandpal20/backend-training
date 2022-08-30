@@ -15,18 +15,18 @@ const validateToken = function(req, res, next) {
     // Input 1 is the token to be decoded
     // Input 2 is the same secret with which the token was generated
     // Check the value of the decoded token yourself
-    let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+    let decodedToken = jwt.verify(token, "functionUp-plutonium-very-very-secret-key");
     if (!decodedToken) {
       return res.send({ status: false, msg: "token is invalid" });
     }
-    req.loggedInUser = decodedToken.userId
+    req.loggedInUser = decodedToken.userId //used in authorization
     next()
 }
 //Authorization 
 //Users authorities are checked for accessing the resource
 const checkAuthorized = function (req, res, next) {
-  let requestedUserId = req.params.requestedUserId
-  if(requestedUserId != req.loggedInUser){
+  let requestedUserId = req.params.userId
+  if(requestedUserId !== req.loggedInUser){
      return res.send({status: false, msg: "Permission denied"})
   }
   next();
