@@ -40,12 +40,12 @@ let getDistricts = async function (req, res) {
 
 let getByPin = async function (req, res) {
     try {
-        let pin = req.query.pincode
+        let pincode = req.query.pincode
         let date = req.query.date
-        console.log(`query params are: ${pin} ${date}`)
+        //console.log(`query params are: ${pin} ${date}`)
         var options = {
             method: "get",
-            url: `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${date}`
+            url: `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${date}`
         }
         let result = await axios(options)
         console.log(result.data)
@@ -69,7 +69,7 @@ let getOtp = async function (req, res) {
         }
 
         let result = await axios(options)
-        console.log(result.data)
+        //console.log(result.data)
         res.status(200).send({ msg: result.data })
     }
     catch (err) {
@@ -78,8 +78,28 @@ let getOtp = async function (req, res) {
     }
 }
 
+//WRITE A GET API TO GET THE LIST OF ALL THE "vaccination sessions by district id" for any given district id and for any given date
 
+let getByDistrictsId = async function(req, res){
+    try {
+        let district = req.query.districtId
+        let date = req.query.date
+        let options = {
+            method: "get",
+            url: `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${district}&date=${date}`
+        }
+        let result = await axios(options);
+       // console.log(result.data)
+        res.status(200).send({ msg: result.data })
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).send({ msg: err.message })
+    }
+
+}
 module.exports.getStates = getStates
 module.exports.getDistricts = getDistricts
 module.exports.getByPin = getByPin
 module.exports.getOtp = getOtp
+module.exports.getByDistrictsId = getByDistrictsId
