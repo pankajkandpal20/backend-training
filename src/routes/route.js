@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CowinController= require("../controllers/cowinController")
-
+const assignmetController = require("../controllers/assignmentController")
 
 
 router.get("/test-me", function (req, res) {
@@ -20,6 +20,10 @@ router.post("/cowin/getOtp", CowinController.getOtp)
 //router.get("/cowin/get", CowinController.get)
 
 router.get("/cowin/getByDistricts", CowinController.getByDistrictsId)
+
+router.get("/getLondonTemprature", assignmetController.getLondonTemprature)
+
+router.get("/getSortedArray", assignmetController.getSortedCities) 
 
 
 module.exports = router;
