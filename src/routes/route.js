@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const CowinController= require("../controllers/cowinController")
 const assignmetController = require("../controllers/assignmentController")
+const memesController = require("../controllers/memesController")
 
 
 router.get("/test-me", function (req, res) {
@@ -24,6 +25,8 @@ router.get("/cowin/getByDistricts", CowinController.getByDistrictsId)
 router.get("/getLondonTemprature", assignmetController.getLondonTemprature)
 
 router.get("/getSortedArray", assignmetController.getSortedCities) 
+
+router.post("/createMemes", memesController.getMemes)
 
 
 module.exports = router;

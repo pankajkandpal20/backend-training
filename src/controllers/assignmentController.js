@@ -44,8 +44,8 @@ let getSortedCities = async function(req, res) {
             console.log(cityObjArray)
           
     }
-    let sorted = cityObjArray.sort( function(a, b) {return a.temp - b.temp})
-    console.log(sorted)
+    let sorted = cityObjArray.sort( function(a, b) {return a.temp - b.temp}) 
+    console.log(sorted)  //asending 
     res.status(200).send({data: sorted})
 }catch(err){
     console.log(err)
