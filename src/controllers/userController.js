@@ -64,7 +64,7 @@ const createUser = async function (req, res) {
         .send({ status: false, message: "mobile number is mandatory..." });
     }
 
-    if (!isValidMobile(phone.trim())) {
+    if (!isValidMobile(phone)) {
       return res.status(400).send({
         status: false,
         message: "please enter valid mobile number...",
