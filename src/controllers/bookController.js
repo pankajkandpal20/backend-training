@@ -15,7 +15,7 @@ const createBook = async function (req, res) {
     let data = req.body;
 
     // destructuring.
-    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } =
+    const { title, excerpt, userId, ISBN, category, subcategory, releasedAt, bookCover} =
       data;
 
     // checking request body.
@@ -121,6 +121,13 @@ const createBook = async function (req, res) {
         status: false,
         message: "Please enter valid release date in YYYY-MM-DD format",
       });
+
+    if(!bookCover){
+      return res.status(400).send({
+        status:false,
+        message: "Please enter Bookcovers details"
+      })
+    }
 
     // creating new book
     const savedData = await bookModel.create(req.body);

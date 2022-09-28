@@ -3,6 +3,8 @@ const route = require("./routes/route");
 const mongoose = require("mongoose");
 const app = express();
 
+const multer= require("multer");
+const { AppConfig } = require('aws-sdk');
 app.use(express.json());
 
 mongoose
@@ -15,6 +17,7 @@ mongoose
   .then(() => console.log("MongoDb is connected"))
   .catch((err) => console.log(err));
 
+app.use( multer().any())
 app.use("/", route);
 
 app.use((req, res, next) => {
